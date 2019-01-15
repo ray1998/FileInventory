@@ -5,7 +5,7 @@ import (
 	"log"
 
 	_ "github.com/denisenkom/go-mssqldb"
-	"github.com/ray1998/workspaces/fileinventory/mssql"
+	"github.com/ray1998/workspaces/FileInventory/mssql"
 )
 
 var (
