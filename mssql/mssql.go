@@ -11,34 +11,44 @@ import (
 	// "errors"
 )
 
-// ConnectionString defines a sql connection string
-type ConnectionString struct {
-	Server            string
-	Database          string
-	TrustedConnection bool
-	Port              int
-	User              string
-	Password          string
+// // ConnectionString defines a sql connection string
+// type ConnectionString struct {
+// 	Server            string
+// 	Database          string
+// 	TrustedConnection bool
+// 	Port              int
+// 	User              string
+// 	Password          string
+// }
+
+// GetTrustedConnectionString - creates a trusted sql connection string
+func GetTrustedConnectionString(server, database string, port int) string {
+	if server == "" || database == "" {
+		msg := fmt.Sprintf("[server=%s;database=%s;Trusted_Connection=True;] is invalid", server, database)
+		log.Fatal(msg)
+	}
+
+	if port > 0 {
+		return fmt.Sprintf("server=%s:%d;database=%s;Trusted_Connection=True;", server, port, database)
+
+	}
+
+	return fmt.Sprintf("server=%s;database=%s;Trusted_Connection=True;", server, database)
 }
 
 // OpenSQLTrustedConnection opens a sql database
-func OpenSQLTrustedConnection(server, database string) (*sql.DB, error) {
-	// Build connection string
-	connString := fmt.Sprintf("server=%s;database=%s;Trusted_Connection=True;", server, database)
+func OpenSQLTrustedConnection(connectionString string) (*sql.DB, error) {
 
 	// Create connection pool
-	db, err := sql.Open("sqlserver", connString)
+	db, err := sql.Open("sqlserver", connectionString)
 	if err != nil {
 		log.Fatal("Error creating connection pool: ", err.Error())
-		return nil, err
 	}
 	ctx := context.Background()
 	err = db.PingContext(ctx)
 	if err != nil {
 		log.Fatal(err.Error())
-		return nil, err
 	}
-	fmt.Printf("Connected to server: %s database: %s\n", server, database)
 
 	return db, nil
 }

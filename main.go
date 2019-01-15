@@ -2,18 +2,31 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/ray1998/workspaces/fileinventory/mssql"
 )
 
-func main() {
-	fmt.Println("Hello world")
+var (
+	// Trace provides trace logging
+	Trace *log.Logger
+	// Info provides info logging
+	Info *log.Logger
+	// Warning provides warning logging
+	Warning *log.Logger
+	// Error provides error logging
+	Error *log.Logger
+)
 
-	db, err := mssql.OpenSQLTrustedConnection("marble", "fileinventory")
+func main() {
+	fmt.Println("File Inventory")
+
+	connectionString := mssql.GetTrustedConnectionString("marble", "fileinventory", 0)
+	db, err := mssql.OpenSQLTrustedConnection(connectionString)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(db)
+	Trace.Println(db)
 
 }
