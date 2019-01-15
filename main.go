@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	// the sql functions
-	"github.com/ray1998/workspaces/FileInventory/mssql"
+	"github.com/ray1998/workspaces/fileinventory/mssql"
 )
 
 func main() {
