@@ -2,11 +2,18 @@ package main
 
 import (
 	"fmt"
-	// the sql functions
+
+	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/ray1998/workspaces/fileinventory/mssql"
 )
 
 func main() {
 	fmt.Println("Hello world")
-	fmt.Println(mssql.Reverse("hello"))
+
+	db, err := mssql.OpenSQLTrustedConnection("marble", "fileinventory")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(db)
+
 }
