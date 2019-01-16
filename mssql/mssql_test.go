@@ -12,6 +12,10 @@ func InvalidServer(t *testing.T) {
 	GetTrustedConnectionString("", "b", 0)
 }
 
+func InvalidDatabase(t *testing.T) {
+	GetTrustedConnectionString("a", "", 0)
+}
+
 func TestGetTrustedConnectionString(t *testing.T) {
 
 	t.Run("valid connection string", func(t *testing.T) {
@@ -36,6 +40,20 @@ func TestInvalidServer(t *testing.T) {
 	t.Fatalf("process rn with err %v, want exit status 1", err)
 }
 
+func TestInvalidDatabase(t *testing.T) {
+	if os.Getenv(Crasher) == "1" {
+		InvalidDatabase(t)
+		return
+	}
+
+	cmd := exec.Command(os.Args[0], "-test.run=TestInvalidDatabase")
+	cmd.Env = append(os.Environ(), Crasher+"=1")
+	err := cmd.Run()
+	if e, ok := err.(*exec.ExitError); ok && !e.Success() {
+		return
+	}
+	t.Fatalf("process rn with err %v, want exit status 1", err)
+}
 func assertCorrectMessage(t *testing.T, got, want string) {
 	t.Helper()
 	if got != want {
