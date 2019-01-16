@@ -9,17 +9,14 @@ import (
 const Crasher = "CRASHER"
 
 func TestGetTrustedConnectionString(t *testing.T) {
-
-	t.Run("valid connection string", func(t *testing.T) {
-		got := GetTrustedConnectionString("a", "b", 0)
-		want := "server=a;database=b;Trusted_Connection=True;"
-		assertCorrectMessage(t, got, want)
-	})
+	got := GetTrustedConnectionString("a", "b", 0)
+	want := "server=a;database=b;Trusted_Connection=True;"
+	assertCorrectMessage(t, got, want)
 }
 
 func TestInvalidServer(t *testing.T) {
 	if os.Getenv(Crasher) == "1" {
-		// no server should panic
+		// no server, should panic
 		GetTrustedConnectionString("", "b", 0)
 		return
 	}
