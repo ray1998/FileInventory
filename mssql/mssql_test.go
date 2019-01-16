@@ -18,6 +18,7 @@ func TestGetTrustedConnectionStringWithPort(t *testing.T) {
 	want := "server=a:1433;database=b;Trusted_Connection=True;"
 	testingutil.AssertCorrectString("Invalid connection string", t, got, want)
 }
+
 func TestInvalidServer(t *testing.T) {
 	ok := testingutil.EvaluatePanic(t, func() {
 		mssql.GetTrustedConnectionString("", "b", 0)
