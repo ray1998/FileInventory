@@ -8,14 +8,6 @@ import (
 
 const Crasher = "CRASHER"
 
-func InvalidServer(t *testing.T) {
-	GetTrustedConnectionString("", "b", 0)
-}
-
-func InvalidDatabase(t *testing.T) {
-	GetTrustedConnectionString("a", "", 0)
-}
-
 func TestGetTrustedConnectionString(t *testing.T) {
 
 	t.Run("valid connection string", func(t *testing.T) {
@@ -27,7 +19,8 @@ func TestGetTrustedConnectionString(t *testing.T) {
 
 func TestInvalidServer(t *testing.T) {
 	if os.Getenv(Crasher) == "1" {
-		InvalidServer(t)
+		// no server should panic
+		GetTrustedConnectionString("", "b", 0)
 		return
 	}
 
@@ -42,7 +35,8 @@ func TestInvalidServer(t *testing.T) {
 
 func TestInvalidDatabase(t *testing.T) {
 	if os.Getenv(Crasher) == "1" {
-		InvalidDatabase(t)
+		// no database, should panic
+		GetTrustedConnectionString("a", "", 0)
 		return
 	}
 
