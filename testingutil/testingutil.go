@@ -83,9 +83,11 @@ func AssertBoolean(message string, t *testing.T, got, want bool) {
 		}
 	}
 
-	if message == "" {
-		t.Errorf("%v: got '%v' want '%v'", message, got, want)
-		return
+	if got != want {
+		if message == "" {
+			t.Errorf("%v: got '%v' want '%v'", message, got, want)
+			return
+		}
+		t.Errorf("%v/%v: got '%v' want '%v'", callerName, message, got, want)
 	}
-	t.Errorf("%v/%v: got '%v' want '%v'", callerName, message, got, want)
 }

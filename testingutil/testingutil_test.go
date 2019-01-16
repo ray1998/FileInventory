@@ -17,6 +17,7 @@ func TestPanicValid(t *testing.T) {
 func TestPanicInvalid(t *testing.T) {
 	ok := testingutil.EvaluatePanic(t, func() {
 		// no panic
+		return
 	})
 
 	testingutil.AssertBoolean("did not panic", t, ok, false)
