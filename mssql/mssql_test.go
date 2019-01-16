@@ -4,6 +4,8 @@ import (
 	"os"
 	"os/exec"
 	"testing"
+
+	"github.com/ray1998/workspaces/FileInventory/testutil"
 )
 
 const Crasher = "CRASHER"
@@ -11,7 +13,17 @@ const Crasher = "CRASHER"
 func TestGetTrustedConnectionString(t *testing.T) {
 	got := GetTrustedConnectionString("a", "b", 0)
 	want := "server=a;database=b;Trusted_Connection=True;"
-	assertCorrectMessage(t, got, want)
+	assertCorrectString(t, got, want)
+}
+
+func TestPanic(t *testing.T) {
+	ok := testutil.EvaluatePanic(t, func() {
+		panic("expected")
+	})
+
+	if !ok {
+
+	}
 }
 
 func TestInvalidServer(t *testing.T) {
@@ -45,9 +57,16 @@ func TestInvalidDatabase(t *testing.T) {
 	}
 	t.Fatalf("process rn with err %v, want exit status 1", err)
 }
-func assertCorrectMessage(t *testing.T, got, want string) {
+func assertCorrectString(t *testing.T, got, want string) {
 	t.Helper()
 	if got != want {
 		t.Errorf("TestGetTrustedConnectionString: got '%s' want '%s'", got, want)
+	}
+}
+
+func assertTrue(message string, t *testing.T, ok bool) {
+	t.Helper()
+	if !ok {
+		t.Errorf("%v: got %v expected %v", message, ok, true)
 	}
 }
