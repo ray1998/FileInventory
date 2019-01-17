@@ -14,16 +14,16 @@ func TestPanicValid(t *testing.T) {
 	testingutil.AssertBoolean("did not panic", t, ok, true)
 }
 
-func TestNoPanic(t *testing.T) {
+func TestNoPanicShouldFail(t *testing.T) {
 	ok := testingutil.EvaluatePanic(t, func() {
 		// no panic
 		return
 	})
 
-	testingutil.AssertBoolean("did not panic", t, ok, false)
+	testingutil.AssertBoolean("should fail", t, ok, true)
 }
 
-func TestNoPanicShouldFail(t *testing.T) {
+func TestAssertBooleanShouldFail(t *testing.T) {
 	testingutil.AssertBoolean("should fail", t, true, false)
 }
 

@@ -19,7 +19,9 @@ func EvaluatePanic(t *testing.T, f func()) bool {
 	if os.Getenv(crasher) == "1" {
 		// function should panic
 		f()
-		return false
+
+		// if it doesn't, we'll get here and return true which will signal ok completion
+		return true
 	}
 
 	pcbuf := make([]uintptr, 1)
@@ -36,12 +38,13 @@ func EvaluatePanic(t *testing.T, f func()) bool {
 	cmd := exec.Command(os.Args[0], "-test.run="+callerName)
 	cmd.Env = append(os.Environ(), crasherPlusOne)
 	err := cmd.Run()
-	e, ok := err.(*exec.ExitError)
-	if ok && !e.Success() {
-		return true
+	if err == nil {
+		return false
 	}
 
-	return false
+	e, ok := err.(*exec.ExitError)
+	success := e.Success()
+	return ok && !success
 }
 
 // AssertCorrectString - tests got:want and throws t.Error with message in it if not ==
