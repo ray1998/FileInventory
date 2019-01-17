@@ -48,23 +48,23 @@ func EvaluatePanic(t *testing.T, f func()) bool {
 func AssertCorrectString(message string, t *testing.T, got, want string) {
 	t.Helper()
 
-	pcbuf := make([]uintptr, 1)
-	n := runtime.Callers(2, pcbuf)
-	callerName := ""
-	if n != 0 {
-		caller := runtime.FuncForPC(pcbuf[0] - 1)
-		if caller != nil {
-			tokens := strings.Split(caller.Name(), ".")
-			callerName = tokens[len(tokens)-1]
-		}
-	}
-
 	if got != want {
-		if message == "" {
-			t.Errorf("%v: got '%s' want '%s'", message, got, want)
-			return
+		pcbuf := make([]uintptr, 1)
+		n := runtime.Callers(2, pcbuf)
+		callerName := ""
+		if n != 0 {
+			caller := runtime.FuncForPC(pcbuf[0] - 1)
+			if caller != nil {
+				tokens := strings.Split(caller.Name(), ".")
+				callerName = tokens[len(tokens)-1]
+			}
 		}
-		t.Errorf("%v/%v: got '%s' want '%s'", callerName, message, got, want)
+
+		if message != "" {
+			callerName = callerName + "/" + message
+		}
+
+		t.Errorf("%v: got '%s' want '%s'", message, got, want)
 	}
 }
 
@@ -72,22 +72,22 @@ func AssertCorrectString(message string, t *testing.T, got, want string) {
 func AssertBoolean(message string, t *testing.T, got, want bool) {
 	t.Helper()
 
-	pcbuf := make([]uintptr, 1)
-	n := runtime.Callers(2, pcbuf)
-	callerName := ""
-	if n != 0 {
-		caller := runtime.FuncForPC(pcbuf[0] - 1)
-		if caller != nil {
-			tokens := strings.Split(caller.Name(), ".")
-			callerName = tokens[len(tokens)-1]
-		}
-	}
-
 	if got != want {
-		if message == "" {
-			t.Errorf("%v: got '%v' want '%v'", message, got, want)
-			return
+		pcbuf := make([]uintptr, 1)
+		n := runtime.Callers(2, pcbuf)
+		callerName := ""
+		if n != 0 {
+			caller := runtime.FuncForPC(pcbuf[0] - 1)
+			if caller != nil {
+				tokens := strings.Split(caller.Name(), ".")
+				callerName = tokens[len(tokens)-1]
+			}
 		}
-		t.Errorf("%v/%v: got '%v' want '%v'", callerName, message, got, want)
+
+		if message != "" {
+			callerName = callerName + "/" + message
+		}
+
+		t.Errorf("%v: got '%v' want '%v'", message, got, want)
 	}
 }

@@ -22,3 +22,15 @@ func TestNoPanic(t *testing.T) {
 
 	testingutil.AssertBoolean("did not panic", t, ok, false)
 }
+
+func TestNoPanicShouldFail(t *testing.T) {
+	testingutil.AssertBoolean("should fail", t, true, false)
+}
+
+func TestAssertCorrectString(t *testing.T) {
+	testingutil.AssertCorrectString("Should not fail", t, "a", "a")
+}
+
+func TestAssertCorrectStringShouldFail(t *testing.T) {
+	testingutil.AssertCorrectString("Should fail", t, "a", "b")
+}
